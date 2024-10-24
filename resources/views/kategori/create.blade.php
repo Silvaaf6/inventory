@@ -4,43 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="./output.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <title>Tambah Data</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title></title>
 </head>
 
-<body>
-    <div class="card prose container mx-auto p-5">
-    <form action="{{ route('kategori.store') }}" method="POST" role="form" enctype="multipart/form-data">
-        @csrf
-        <div class="space-y-12">
-            <div class="border-b border-gray-900/10 pb-12">
-                <h2 class="text-base font-semibold leading-7 text-gray-900">Tambah Kategori</h2>
-            </div>
-            <div class="border-b border-gray-900/10 pb-12">
-                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <div class="sm:col-span-3">
-                        <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">
-                            Nama Kategori
-                        </label>
-                        <div class="mt-2">
-                            <input type="text" name="nama_kategori" id="nama_kategori" autocomplete="given-name"
-                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                        </div>
+<body class="bg-red-100">
+    @extends('layouts.app')
+    @section('content')
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="bg-white shadow-md rounded-lg p-5 w-full max-w-lg">
+                <h2 class="text-2xl font-semibold text-center text-gray-900">Tambah Kategori</h2>
+                <form action="{{ route('kategori.store') }}" method="POST" role="form" enctype="multipart/form-data" class="mt-4">
+                    @csrf
+                    <div class="mb-4">
+                        <label for="nama_kategori" class="block text-lg font-medium text-gray-700">Nama Kategori</label>
+                        <input type="text" name="nama_kategori" id="nama_kategori" required
+                            class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                            placeholder="Masukkan Nama Kategori">
+                        @error('nama_kategori')
+                            <span class="text-red-700 text-sm mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
-                </div>
+
+                    <div class="mt-8 flex items-center justify-between">
+                        <a href="{{ route('kategori.index') }}"
+                            class="no-underline bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
+                            Kembali
+                        </a>
+
+                        <button type="submit"
+                            class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
+                            Simpan
+                        </button>
+                    </div>
+
+                </form>
             </div>
         </div>
-
-        <div class="mt-6 flex items-center justify-end gap-x-6">
-            <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Kembali</button>
-            <button type="submit"
-                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Simpan</button>
-        </div>
-    </form>
-    </div>
+    @endsection
 </body>
+
 
 </html>

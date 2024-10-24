@@ -15,9 +15,10 @@ class KategoriController extends Controller
     /**
      * Display a listing of the resource.
      */
+    
     public function index()
     {
-        $kategori = kategori::all();
+        $kategori = Kategori::paginate(2);
         confirmDelete('Hapus!', 'Anda Yakin Akan Menghapus?');
         return view('kategori.index', compact('kategori'));
     }
@@ -38,6 +39,8 @@ class KategoriController extends Controller
     {
         $request->validate([
             'nama_kategori' => 'required|unique:kategoris',
+        ], [
+            'nama_kategori.required' => 'nama kategori harus diisi',
         ]);
 
         $kategori = new kategori;
