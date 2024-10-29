@@ -18,11 +18,11 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $hobi = Hobby::all();
-        $profile = profile::with('hobby')->where('id_user', Auth::id())->first()->toArray();
+        $hobby = Hobby::all();
+        $profile = Profile::where('id_user', Auth::id())->first();
 
         // dd($profile);
-        return view('profile.index', compact('profile', 'hobi'));
+        return view('profile.index', compact('profile', 'hobby'));
     }
 
     /**
@@ -39,24 +39,26 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'username' => 'required',
-        //     'tempat_lahir' => 'required',
-        //     'tgl_lahir' => 'required|date|before_or_equal:' . now()->subYears(13)->format('Y-m-d'),
-        //     'agama' => 'required',
-        //     'alamat' => 'required',
-        //     'jenis_kelamin' => 'required',
-        //     'no_telp' => 'required',
+        $request->validate([
+            'username' => 'required',
+            'tempat_lahir' => 'required',
+            'tgl_lahir' => 'required|date|before_or_equal:' . now()->subYears(13)->format('Y-m-d'),
+            'agama' => 'required',
+            'alamat' => 'required',
+            'jenis_kelamin' => 'required',
+            'no_telp' => 'required',
+            'id_hobby' => 'required',
 
-        // ], [
-        //     'username.required' => 'nama penulis harus diisi',
-        //     'tempat_lahir.required' => 'tempat lahir harus diisi',
-        //     'tgl_lahir.required' => 'tanggal lahir harus diisi',
-        //     'agama.required' => 'agama harus diisi',
-        //     'alamat.required' => 'alamat harus diisi',
-        //     'jenis_kelamin.required' => 'jenis kelamin harus diisi',
-        //     'no_telp.required' => 'no telepon harus diisi',
-        // ]);
+        ], [
+            'username.required' => 'nama penulis harus diisi',
+            'tempat_lahir.required' => 'tempat lahir harus diisi',
+            'tgl_lahir.required' => 'tanggal lahir harus diisi',
+            'agama.required' => 'agama harus diisi',
+            'alamat.required' => 'alamat harus diisi',
+            'jenis_kelamin.required' => 'jenis kelamin harus diisi',
+            'no_telp.required' => 'no telepon harus diisi',
+            'id_hobby.required' => 'hobi harus dipilih',
+        ]);
 
         $profile = new profile;
         $profile->id_user = auth()->user()->id; // Ambil ID dari user yang login
@@ -104,26 +106,26 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $request->validate([
-        //     'username' => 'required',
-        //     'tempat_lahir' => 'required',
-        //     'tgl_lahir' => 'required|date|before_or_equal:' . now()->subYears(13)->format('Y-m-d'),
-        //     'agama' => 'required',
-        //     'alamat' => 'required',
-        //     'jenis_kelamin' => 'required',
-        //     'no_telp' => 'required',
-        //     'hobi' => 'required',
+        $request->validate([
+            'username' => 'required',
+            'tempat_lahir' => 'required',
+            'tgl_lahir' => 'required|date|before_or_equal:' . now()->subYears(13)->format('Y-m-d'),
+            'agama' => 'required',
+            'alamat' => 'required',
+            'jenis_kelamin' => 'required',
+            'no_telp' => 'required',
+            'id_hobby' => 'required',
 
-        // ], [
-        //     'username.required' => 'nama penulis harus diisi',
-        //     'tempat_lahir.required' => 'tempat lahir harus diisi',
-        //     'tgl_lahir.required' => 'tanggal lahir harus diisi',
-        //     'agama.required' => 'agama harus diisi',
-        //     'alamat.required' => 'alamat harus diisi',
-        //     'jenis_kelamin.required' => 'jenis kelamin harus diisi',
-        //     'no_telp.required' => 'no telepon harus diisi',
-        //     'hobi.required' => 'hobi harus diisi',
-        // ]);
+        ], [
+            'username.required' => 'nama penulis harus diisi',
+            'tempat_lahir.required' => 'tempat lahir harus diisi',
+            'tgl_lahir.required' => 'tanggal lahir harus diisi',
+            'agama.required' => 'agama harus diisi',
+            'alamat.required' => 'alamat harus diisi',
+            'jenis_kelamin.required' => 'jenis kelamin harus diisi',
+            'no_telp.required' => 'no telepon harus diisi',
+            'id_hobby.required' => 'hobi harus dipilih',
+        ]);
 
         $profile = profile::findOrFail($id);
         $profile->id_user = auth()->user()->id; // Ambil ID dari user yang login

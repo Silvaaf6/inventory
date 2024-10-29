@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('content')
     <div class="flex items-center justify-center min-h-screen bg-gray-100">
-        <div class="bg-white p-8 rounded-lg shadow-lg max-w-xl">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-[900px]">
             <h2 class="text-2xl font-bold text-center mb-6">Profile</h2>
-            <form action="{{ route('profile.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <form action="{{ route('profile.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6 ">
                 @csrf
                 <!-- Grid Form 2 Kolom -->
                 <div class="grid grid-cols-2 gap-6">
@@ -68,8 +68,10 @@
 
                     <!-- Hobi -->
                     <div>
-                        <label for="hobby" class="block text-sm font-medium text-gray-700">Hobby</label>
-                        <select name="id_hobby[]" class="form-select select=multiple" multiple="multiple">
+                        <label for="id_hobby" class="block text-sm font-medium text-gray-700">Hobby</label>
+                        <select name="id_hobby"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            required>
                             @foreach ($hobi as $data)
                                 <option value="{{ $data->id }}">{{ $data->nama_hobby }}</option>
                             @endforeach

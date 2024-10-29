@@ -27,7 +27,7 @@
             <div class="container mx-auto flex justify-between items-center">
                 <!-- Left Side Of Navbar -->
                 <div class="flex items-center space-x-8">
-                    <a class="text-lg text-black no-underline text-2xl" href="{{ url('/') }}">
+                    <a class="text-black no-underline text-2xl" href="{{ url('/') }}">
                         {{ config('app.name', 'INVENTORY') }}
                     </a>
                     <!-- Mobile Menu Button -->
@@ -41,7 +41,6 @@
                     <div class="hidden md:flex items-center space-x-4" id="desktopMenu">
                         <a class="no-underline text-black text-lg" href="/buku/">Buku</a>
                         <a class="no-underline text-black text-lg" href="/kategori/">Kategori</a>
-                        <a class="no-underline text-black text-lg" href="/profile/">Profile</a>
                         <a class="no-underline text-black text-lg" href="/hobby/">Hobby</a>
                     </div>
                 </div>
@@ -72,6 +71,14 @@
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
                                     @csrf
                                 </form>
+                                <a class="hover:bg-gray-300 text-black no_underline block px-3 py-2"
+                                    href="{{ route('profile.index') }}">
+                                    {{ __('Profile') }}
+                                </a>
+                                <a class="hover:bg-gray-300 text-black no_underline block px-3 py-2"
+                                    href="{{ route('password.edit') }}">
+                                    {{ __('Edit Password') }}
+                                </a>
                             </div>
                         </div>
                         <script>

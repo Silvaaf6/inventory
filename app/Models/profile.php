@@ -20,6 +20,8 @@ class profile extends Model
         return $this->belongsTo(hobby::class, 'id_hobby');
     }
 
+    
+
     public function deleteImage()
     {
         if ($this->cover && file_exists(public_path('images/profile/' . $this->cover))) {
