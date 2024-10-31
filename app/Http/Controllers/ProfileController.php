@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\hobby;
-use App\Models\profile;
+use App\Models\Hobi;
+use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,11 +18,11 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $hobby = Hobby::all();
+        $hobi = Hobi::where('id_hobi');
         $profile = Profile::where('id_user', Auth::id())->first();
 
         // dd($profile);
-        return view('profile.index', compact('profile', 'hobby'));
+        return view('profile.index', compact('profile', 'hobi'));
     }
 
     /**
@@ -30,7 +30,14 @@ class ProfileController extends Controller
      */
     public function create()
     {
-        $hobi = Hobby::all();
+        $existingProfile = Profile::where('id_user', auth()->id())->first();
+
+        if ($existingProfile) {
+            // Jika sudah ada profil, arahkan ke halaman profil atau tampilkan pesan
+            return redirect()->route('profile.index')->with('error', 'Anda sudah memiliki profile!');
+        }
+
+        $hobi = Hobi::all();
         return view('profile.create', compact('hobi'));
     }
 
@@ -39,7 +46,18 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
+
+        // Cek apakah pengguna sudah memiliki profil
+        $existingProfile = Profile::where('id_user', auth()->id())->first();
+
+        if ($existingProfile) {
+            // Jika sudah ada profil, batalkan penyimpanan dan kembali ke halaman profil
+            return redirect()->route('profile.index')->with('error', 'Anda sudah memiliki profile!');
+        }
+
         $request->validate([
+            'cover' => 'required|mimes:jpg,jpeg,png|max:65535',
             'username' => 'required',
             'tempat_lahir' => 'required',
             'tgl_lahir' => 'required|date|before_or_equal:' . now()->subYears(13)->format('Y-m-d'),
@@ -47,9 +65,10 @@ class ProfileController extends Controller
             'alamat' => 'required',
             'jenis_kelamin' => 'required',
             'no_telp' => 'required',
-            'id_hobby' => 'required',
+            'hobi' => 'required',
 
         ], [
+            'cover.required' => 'Foto harus diisi',
             'username.required' => 'nama penulis harus diisi',
             'tempat_lahir.required' => 'tempat lahir harus diisi',
             'tgl_lahir.required' => 'tanggal lahir harus diisi',
@@ -57,10 +76,9 @@ class ProfileController extends Controller
             'alamat.required' => 'alamat harus diisi',
             'jenis_kelamin.required' => 'jenis kelamin harus diisi',
             'no_telp.required' => 'no telepon harus diisi',
-            'id_hobby.required' => 'hobi harus dipilih',
         ]);
 
-        $profile = new profile;
+        $profile = new Profile;
         $profile->id_user = auth()->user()->id; // Ambil ID dari user yang login
         $profile->username = $request->username;
         $profile->tempat_lahir = $request->tempat_lahir;
@@ -69,7 +87,6 @@ class ProfileController extends Controller
         $profile->alamat = $request->alamat;
         $profile->jenis_kelamin = $request->jenis_kelamin;
         $profile->no_telp = $request->no_telp;
-        $profile->id_hobby = $request->id_hobby;
 
         //upload image
         if ($request->hasFile('cover')) {
@@ -80,6 +97,7 @@ class ProfileController extends Controller
         }
 
         $profile->save();
+        $profile->hobi()->attach($request->hobi);
         return redirect()->route('profile.index');
     }
 
@@ -97,7 +115,7 @@ class ProfileController extends Controller
     public function edit($id)
     {
         $profile = profile::find($id);
-        $hobi = Hobby::all();
+        $hobi = Hobi::all();
         return view('profile.edit', compact('profile', 'hobi'));
     }
 
@@ -107,6 +125,7 @@ class ProfileController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'cover' => 'mimes:jpg,jpeg,png|max:65535',
             'username' => 'required',
             'tempat_lahir' => 'required',
             'tgl_lahir' => 'required|date|before_or_equal:' . now()->subYears(13)->format('Y-m-d'),
@@ -114,8 +133,6 @@ class ProfileController extends Controller
             'alamat' => 'required',
             'jenis_kelamin' => 'required',
             'no_telp' => 'required',
-            'id_hobby' => 'required',
-
         ], [
             'username.required' => 'nama penulis harus diisi',
             'tempat_lahir.required' => 'tempat lahir harus diisi',
@@ -124,7 +141,6 @@ class ProfileController extends Controller
             'alamat.required' => 'alamat harus diisi',
             'jenis_kelamin.required' => 'jenis kelamin harus diisi',
             'no_telp.required' => 'no telepon harus diisi',
-            'id_hobby.required' => 'hobi harus dipilih',
         ]);
 
         $profile = profile::findOrFail($id);
@@ -136,7 +152,6 @@ class ProfileController extends Controller
         $profile->alamat = $request->alamat;
         $profile->jenis_kelamin = $request->jenis_kelamin;
         $profile->no_telp = $request->no_telp;
-        $profile->id_hobby = $request->id_hobby;
 
 //upload image
         if ($request->hasFile('cover')) {

@@ -1,16 +1,14 @@
 @extends('layouts.app')
 @section('content')
     <div class="flex items-center justify-center min-h-screen bg-gray-100">
-        <div class="bg-white p-8 rounded-lg shadow-lg w-[900px]">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-[900px] mt-5">
             <h2 class="text-2xl font-bold text-center mb-6">Profile</h2>
             <form action="{{ route('profile.update', $profile->id) }}" method="POST" enctype="multipart/form-data"
                 class="space-y-6">
                 @csrf
                 @method('PUT')
-                <!-- Grid Form 2 Kolom -->
-                <div class="grid grid-cols-2 gap-6">
 
-                    <!-- Nama Lengkap -->
+                <div class="grid grid-cols-2 gap-6">
                     <div>
                         <label for="username" class="block text-sm font-medium text-gray-700">Nama</label>
                         <input type="text" name="username" id="username" required
@@ -18,7 +16,6 @@
                             value="{{ $profile->username }}">
                     </div>
 
-                    <!-- Tempat Lahir -->
                     <div>
                         <label for="tempat_lahir" class="block text-sm font-medium text-gray-700">Tempat Lahir</label>
                         <input type="text" name="tempat_lahir" id="tempat_lahir" required
@@ -26,7 +23,6 @@
                             value="{{ $profile->tempat_lahir }}">
                     </div>
 
-                    <!-- Tanggal Lahir -->
                     <div>
                         <label for="tgl_lahir" class="block text-sm font-medium text-gray-700">Tanggal Lahir</label>
                         <input type="date" name="tgl_lahir" id="tgl_lahir" required
@@ -34,7 +30,6 @@
                             value="{{ $profile->tgl_lahir }}">
                     </div>
 
-                    <!-- Agama -->
                     <div>
                         <label for="agama" class="block text-sm font-medium text-gray-700">Agama</label>
                         <select name="agama" id="agama" required
@@ -47,7 +42,6 @@
                         </select>
                     </div>
 
-                    <!-- Alamat -->
                     <div>
                         <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
                         <input type="text" name="alamat" id="alamat" required
@@ -55,7 +49,6 @@
                             value="{{ $profile->alamat }}">
                     </div>
 
-                    <!-- Jenis Kelamin -->
                     <div>
                         <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
                         <select name="jenis_kelamin" id="jenis_kelamin" required
@@ -65,7 +58,6 @@
                         </select>
                     </div>
 
-                    <!-- No Telepon -->
                     <div>
                         <label for="no_telp" class="block text-sm font-medium text-gray-700">No Telepon</label>
                         <input type="number" name="no_telp" id="no_telp" required
@@ -73,12 +65,12 @@
                             value="{{ $profile->no_telp }}">
                     </div>
 
-                    <!-- Hobi -->
                     <div>
-                        <label for="id_hobby" class="block text-sm font-medium text-gray-700">Hobby</label>
-                        <select name="id_hobby" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                        <label for="id_hobi" class="block text-sm font-medium text-gray-700">Hobby</label>
+                        <select name="hobi[]" required
+                            class="form-select select-multiple mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" multiple>
                             @foreach ($hobi as $data)
-                                <option value="{{ $data->id }}">{{ $data->nama_hobby }}</option>
+                                <option value="{{ $data->id }}">{{ $data->nama_hobi }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -86,11 +78,18 @@
 
                 <div>
                     <label for="cover" class="block text-sm font-medium text-gray-700">Foto Profil</label>
-                    <input type="file" name="cover" id="cover"
+                    @if ($profile->cover)
+                        <img src="{{ asset('images/profile/' . $profile->cover) }}" alt="Cover"
+                            class="mb-3 h-40 w-40 object-cover">
+                    @else
+                        <p class="text-gray-500 text-sm">Tidak ada gambar saat ini.</p>
+                    @endif
+
+                    <input type="file" accept=".jpg,.jpeg,.png" name="cover" id="cover"
                         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        value="{{ $profile->cover }}">
+                        value="{{ old('cover', $profile->cover) }}">
                 </div>
-                <!-- Tombol Submit -->
+
                 <div>
                     <button type="submit"
                         class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">

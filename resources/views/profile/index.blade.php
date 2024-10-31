@@ -11,22 +11,26 @@
 <body class="bg-gray-100">
     @extends('layouts.app')
     @section('content')
+        @if (session('error'))
+            <div class="bg-red-600 text-white p-3 rounded mb-4 mt-3 w-[770px] text-center mx-auto">
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="card mt-3 max-w-3xl mx-auto">
-            <div class="card-header flex justify-between bg-gray-200 p-4 rounded-t-lg">
+            <div class="card-header flex justify-between bg-red-300 p-4 rounded-t-lg">
                 <a href="" class="text-teal-600 font-semibold no-underline">Profile</a>
-                <a href="" class="text-teal-600 font-semibold no-underline">Password</a>
+                <a href="{{ route('password.edit') }}" class="text-teal-600 font-semibold no-underline">Password</a>
             </div>
             <div class="card-body bg-white p-6 rounded-b-lg shadow-lg">
                 <form action="{{ route('profile.store', $profile->id) }}" method="POST" role="form"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="flex flex-col lg:flex-row justify-center gap-4">
-                        <!-- Left side (Profile Card) -->
+
                         <div class=" lg:w-1/3 flex flex-col items-center bg-gray-50 p-4  shadow-md">
-                            <img src="{{ asset('/images/profile/' . $profile->cover) }}" class="mx-auto">
+                            <img src="{{ asset('/images/profile/' . $profile->cover) }}" class="mx-auto w-96">
                         </div>
 
-                        <!-- Right side (Profile Information) -->
                         <div class="w-full lg:w-2/3">
                             <div class="flex flex-col space-y-4">
                                 <div class="flex justify-between border-b pb-2">
@@ -66,9 +70,12 @@
 
                                 <div class="flex justify-between border-b pb-2">
                                     <span class="text-gray-600">Hobi</span>
-                                    {{-- @foreach ($hobby as $item) --}}
-                                    <span class="font-semibold">{{ $profile->hobby->nama_hobby }}</span>
-                                    {{-- @endforeach --}}
+                                    <ol>
+                                        @foreach ($profile->hobi as $data)
+                                            <li type="1" class="font-semibold">{{ $data->nama_hobi }}</li>
+                                        @endforeach
+                                    </ol>
+                                    {{-- <span class="font-semibold">{{ $profile->hobi->nama_hobi }}</span> --}}
                                 </div>
 
                                 <div class="flex justify-end mt-4">
@@ -76,7 +83,6 @@
                                         class="bg-teal-500 text-white px-3 py-2 rounded-lg hover:bg-teal-600 text-sm no-underline">
                                         Edit
                                     </a>
-
                                 </div>
                             </div>
                         </div>

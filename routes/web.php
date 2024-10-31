@@ -33,16 +33,16 @@ Route::get('profile/edit/{id}', [ProfileController::class, 'edit'])->name('profi
 Route::put('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 
 // HOBI
-use App\Http\Controllers\HobbyController;
-Route::get('/hobby', [App\Http\Controllers\HobbyController::class, 'index'])->name('hobby.index');
-Route::get('/hobby/create', [App\Http\Controllers\HobbyController::class, 'create'])->name('hobby.create');
-Route::post('/hobby', [App\Http\Controllers\HobbyController::class, 'store'])->name('hobby.store');
-Route::get('/hobby/edit/{id}', [HobbyController::class, 'edit'])->name('hobby.edit');
-Route::put('/hobby/{id}', [App\Http\Controllers\HobbyController::class, 'update'])->name('hobby.update');
-Route::delete('/hobby/{id}', [App\Http\Controllers\HobbyController::class, 'destroy'])->name('hobby.destroy');
+use App\Http\Controllers\HobiController;
+Route::get('/hobi', [App\Http\Controllers\HobiController::class, 'index'])->name('hobi.index');
+Route::get('/hobi/create', [App\Http\Controllers\HobiController::class, 'create'])->name('hobi.create');
+Route::post('/hobi', [App\Http\Controllers\HobiController::class, 'store'])->name('hobi.store');
+Route::get('/hobi/edit/{id}', [HobiController::class, 'edit'])->name('hobi.edit');
+Route::put('/hobi/{id}', [App\Http\Controllers\HobiController::class, 'update'])->name('hobi.update');
+Route::delete('/hobi/{id}', [App\Http\Controllers\HobiController::class, 'destroy'])->name('hobi.destroy');
 
 use App\Http\Controllers\Auth\PasswordController;
-Route::put('/password/update', [PasswordController::class, 'update'])->name('password.update');
+Route::put('/password/update', [PasswordController::class, 'update'])->name('password.update1');
 Route::get('/password/edit', [PasswordController::class, 'edit'])->name('password.edit');
 
 

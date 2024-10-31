@@ -22,12 +22,13 @@ return new class extends Migration
             $table->string('alamat');
             $table->string('jenis_kelamin');
             $table->string('no_telp');
-            $table->unsignedBigInteger('id_hobby')->nullable();
-
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('id_hobby')->references('id')->on('hobbies')->onDelete('cascade');
-
             $table->timestamps();
+        });
+
+        Schema::create('hobi_profile', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('id_profile')->onDelete('cascade');
+            $table->foreignId('id_hobi')->onDelete('cascade');
         });
     }
 
@@ -37,5 +38,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('profiles');
+        Schema::dropIfExists('hobi_profile');
     }
 };

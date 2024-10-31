@@ -7,25 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class profile extends Model
 {
-    protected $fillable = ['id', 'id_user', 'cover', 'username', 'tempat_lahir', 'tgl_lahir', 'agama', 'alamat', 'jenis_kelamin', 'no_telp', 'id_hobby'];
+    protected $fillable = ['id', 'id_user', 'cover', 'username', 'tempat_lahir', 'tgl_lahir', 'agama', 'alamat', 'jenis_kelamin', 'no_telp'];
     use HasFactory;
 
     public function user()
     {
-        return $this->belongsTo(user::class, 'id_user');
+        return $this->belongsTo(User::class);
     }
-
-    public function hobby()
+    public function hobi()
     {
-        return $this->belongsTo(hobby::class, 'id_hobby');
+        return $this->belongsToMany(Hobi::class, 'hobi_profile', 'id_profile', 'id_hobi');
     }
-
-    
 
     public function deleteImage()
     {
-        if ($this->cover && file_exists(public_path('images/profile/' . $this->cover))) {
-            return unlink(public_path('images/profile/' . $this->cover));
+        if ($this->cover && file_exists(public_path('images/profile' . $this->cover))) {
+            return unlink(public_path('images/profile' . $this->cover));
         }
     }
 }
