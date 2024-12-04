@@ -14,11 +14,12 @@
         <div class="flex items-center justify-center min-h-screen">
             <div class="bg-white shadow-md rounded-lg p-5 w-full max-w-lg">
                 <h2 class="text-2xl font-semibold text-center text-gray-900">Tambah Hobby</h2>
-                <form action="{{ route('hobi.store') }}" method="POST" role="form" enctype="multipart/form-data" class="mt-4">
+                <form action="{{ route('hobi.store') }}" method="POST" role="form" enctype="multipart/form-data"
+                    class="mt-4">
                     @csrf
                     <div class="mb-4">
                         <label for="nama_hobi" class="block text-lg font-medium text-gray-700">Nama Hobi</label>
-                        <input type="text" name="nama_hobi" id="nama_hobi" required
+                        <input type="text" name="nama_hobi" id="nama_hobi"
                             class="mt-3 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             placeholder="Masukkan Nama Hobi">
                         @error('nama_hobi')

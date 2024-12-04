@@ -11,17 +11,14 @@ class BukuController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('permission:read_buku', ['only' => ['index']]);
+        $this->middleware('permission:create_buku', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit_buku', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete_buku', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
      */
-    // public function index()
-    // {
-    //     $buku = buku::all();
-    //     confirmDelete('Hapus!', 'Anda Yakin Akan Menghapus?');
-    //     return view('buku.index', compact('buku'));
-    // }
 
     public function index()
     {
@@ -35,7 +32,7 @@ class BukuController extends Controller
      */
     public function create()
     {
-        $kategori = kategori::all();
+        $kategori = Kategori::all();
         return view('buku.create', compact('kategori'));
     }
 
@@ -60,7 +57,7 @@ class BukuController extends Controller
             'tgl_terbit.required' => 'tanggal terbit harus diisi',
         ]);
 
-        $buku = new buku();
+        $buku = new Buku();
         $buku->judul = $request->judul;
         $buku->id_kategori = $request->id_kategori;
         $buku->penulis = $request->penulis;
@@ -76,7 +73,7 @@ class BukuController extends Controller
             $buku->cover = $name;
         }
 
-        $buku->save();
+        $buku->save();  
         Alert::success('Sukses', 'Data Berhasil Di Tambahkan')->autoClose(1000);
         return redirect()->route('buku.index');
 
@@ -95,8 +92,8 @@ class BukuController extends Controller
      */
     public function edit($id)
     {
-        $kategori = kategori::all();
-        $buku = buku::findOrFail($id);
+        $kategori = Kategori::all();
+        $buku = Buku::findOrFail($id);
         return view('buku.edit', compact('buku', 'kategori'));
     }
 
@@ -121,7 +118,7 @@ class BukuController extends Controller
             'tgl_terbit.required' => 'tanggal terbit harus diisi',
         ]);
 
-        $buku = buku::findOrFail($id);
+        $buku = Buku::findOrFail($id);
         $buku->cover = $request->cover;
         $buku->judul = $request->judul;
         $buku->id_kategori = $request->id_kategori;
@@ -137,6 +134,8 @@ class BukuController extends Controller
             $name = rand(1000, 9999) . $img->getClientOriginalName();
             $img->move('images/buku', $name);
             $buku->cover = $name;
+        } else {
+            $buku->cover = $buku->getOriginal('cover');
         }
 
         $buku->save();
@@ -150,9 +149,9 @@ class BukuController extends Controller
      */
     public function destroy($id)
     {
-        $buku = buku::findOrFail($id);
-        $buku->delete();
+        $buku = Buku::findOrFail($id);
         $buku->deleteImage();
+        $buku->delete();
         Alert::success('Sukses', 'Data Berhasil Di Hapus')->autoClose(1000);
         return redirect()->route('buku.index');
     }
